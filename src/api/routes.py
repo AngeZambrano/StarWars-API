@@ -18,7 +18,7 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-# ENDPOINTS USERS
+# ENDPOINTS GET ALL USERS
 
 @api.route('/users', methods=['GET'])
 def get_all_users():
@@ -46,6 +46,27 @@ def get_one_users(user_id):
     response_body = {
         "message": "ok",
         "result": user_query.serialize()
+
+    }
+
+    return jsonify(response_body), 200
+
+# ENDPOINT CREATE ONE USER
+
+@api.route('/users', methods=['POST'])
+def create_one_users():
+
+    request_body = request.get_json(force=True)
+    print(request_body)
+    user = User(name=request_body["name"], email=request_body["email"], password=request_body["password"])
+    db.session.add(user)
+    db.session.commit()
+
+    # user_query = User.query.filter_by(id=user_id).first()
+
+    response_body = {
+        "message": "User created",
+        # "result": user_query.serialize()
 
     }
 
