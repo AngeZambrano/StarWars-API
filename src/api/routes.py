@@ -71,3 +71,71 @@ def create_one_users():
     }
 
     return jsonify(response_body), 200
+
+# ENDPOINT GET ALL CHARACTERS
+
+@api.route('/characters', methods=['GET'])
+def get_all_characters():
+
+    characters_query = Characters.query.all()
+    results = list(map(lambda item: item.serialize(), characters_query))
+    # print(characters_query)
+    # print(results)
+
+    response_body = {
+        "message": "ok",
+        "results": results
+
+    }
+
+    return jsonify(response_body), 200
+
+# ENDPOINT ONE CHARACTER
+
+@api.route('/characters/<int:character_id>', methods=['GET'])
+def get_one_character(character_id):
+
+    character_query = Characters.query.filter_by(id=character_id).first()
+    # print(character_query)
+
+    response_body = {
+        "message": "ok",
+        "result": character_query.serialize()
+
+    }
+
+    return jsonify(response_body), 200
+
+# ENDPOINT GET ALL PlANETS
+
+@api.route('/planets', methods=['GET'])
+def get_all_planets():
+
+    planets_query = Planets.query.all()
+    results = list(map(lambda item: item.serialize(), planets_query))
+    # print(planets_query)
+    print(results)
+
+    response_body = {
+        "message": "ok",
+        "results": results
+
+    }
+
+    return jsonify(response_body), 200
+
+# ENDPOINT ONE PLANET
+
+@api.route('/planets/<int:planet_id>', methods=['GET'])
+def get_one_planet(planet_id):
+
+    planet_query = Planets.query.filter_by(id=planet_id).first()
+    # print(planet_query)
+
+    response_body = {
+        "message": "ok",
+        "result": planet_query.serialize()
+
+    }
+
+    return jsonify(response_body), 200
