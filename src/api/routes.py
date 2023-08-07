@@ -139,3 +139,86 @@ def get_one_planet(planet_id):
     }
 
     return jsonify(response_body), 200
+
+# CREATE ONE FAVORITE PLANET_ID
+
+@api.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+def create_one_planet(planet_id):
+
+    request_body = request.get_json(force=True)
+
+    # print(request_body)
+    favorite = Favorites(user_id=request_body["user_id"], planets_id=planet_id)
+    db.session.add(favorite)
+    db.session.commit()
+
+    response_body = {
+        "message": "Planet created",
+        "result": favorite.serialize()
+
+    }
+
+    return jsonify(response_body), 200
+
+# CREATE ONE FAVORITE CHARACTER_ID
+
+@api.route('/favorite/characters/<int:character_id>', methods=['POST'])
+def create_one_character(character_id):
+
+    request_body = request.get_json(force=True)
+
+    # print(request_body)
+    new_favorite = Favorites(user_id=request_body["user_id"], characters_id=character_id)
+    db.session.add(new_favorite)
+    db.session.commit()
+
+    response_body = {
+        "message": "Character created",
+        "result": new_favorite.serialize()
+
+    }
+
+    return jsonify(response_body), 200
+
+# DELETE ONE FAVORITE PLANET_ID
+
+@api.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
+def delete_one_planet(planet_id):
+
+    request_body = request.get_json(force=True)
+
+    delete_favorite= Favorites.query.filter_by(planets_id=planet_id).filter_by(user_id=request_body["user_id"]).first()
+    
+    db.session.delete(delete_favorite)
+    db.session.commit()
+
+    response_body = {
+        "message": "favorite deleted"
+
+    }
+
+    return jsonify(response_body), 200
+
+# DELETE ONE FAVORITE CHARACTER_ID
+
+@api.route('/favorite/characters/<int:character_id>', methods=['DELETE'])
+def delete_one_character(character_id):
+
+    request_body = request.get_json(force=True)
+
+    delete_favorite_character= Favorites.query.filter_by(characters_id=character_id).filter_by(user_id=request_body["user_id"]).first()
+    
+    db.session.delete(delete_favorite_character)
+    db.session.commit()
+
+    response_body = {
+        "message": "favorite deleted"
+
+    }
+
+    return jsonify(response_body), 200
+
+
+
+
+
